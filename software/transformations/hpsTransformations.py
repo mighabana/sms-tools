@@ -72,12 +72,13 @@ def hpsMorph(hfreq1, hmag1, stocEnv1, hfreq2, hmag2, stocEnv2, hfreqIntp, hmagIn
 	for l in range(L1):                                      # generate morphed frames
 		dataIndex = int(round(((L2-1)*l)/float(L1-1)))
 		# identify harmonics that are present in both frames
-		harmonics = np.intersect1d(np.array(np.nonzero(hfreq1[l,:]), dtype=np.int)[0], np.array(np.nonzero(hfreq2[dataIndex,:]), dtype=np.int)[0])
+		harmonics = np.intersect1d(np.array(np.nonzero(hfreq1[l,:]), dtype=int)[0], np.array(np.nonzero(hfreq2[dataIndex,:]), dtype=int)[0])
 		# interpolate the frequencies of the existing harmonics
 		yhfreq[l,harmonics] =  (1-hfreqIndexes[l])* hfreq1[l,harmonics] + hfreqIndexes[l] * hfreq2[dataIndex,harmonics]
 		# interpolate the magnitudes of the existing harmonics
 		yhmag[l,harmonics] =  (1-hmagIndexes[l])* hmag1[l,harmonics] + hmagIndexes[l] * hmag2[dataIndex,harmonics]
 		# interpolate the stochastic envelopes of both frames
+
 		ystocEnv[l,:] =  (1-stocIndexes[l])* stocEnv1[l,:] + stocIndexes[l] * stocEnv2[dataIndex,:]
 	return yhfreq, yhmag, ystocEnv
 	
